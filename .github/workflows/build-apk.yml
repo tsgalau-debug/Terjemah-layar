@@ -33,11 +33,24 @@ jobs:
             "$SDKMANAGER" "platform-tools" "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" || true
           fi
 
-      - name: Decode debug.keystore from debug.keystore.base64
+      - name: Prepare debug.keystore for Signing
         run: |
           if [ -f "debug.keystore.base64" ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
+            tr -d '\n\r ' < debug.keystore.base64 | base64 -d > debug.keystore || true
           fi
+          if [ ! -s "debug.keystore" ]; then
+            rm -f debug.keystore
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+          ls -lh debug.keystore
 
       - name: Configure .env for Secrets Gradle Plugin
         env:
