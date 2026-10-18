@@ -1,0 +1,8 @@
+{
+  "name": "LayarTerjemah",
+  "description": "Penerjemah layar instan Inggris ke Indonesia dengan tombol apung overlay, in-place terjemahan, dan hybrid AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
